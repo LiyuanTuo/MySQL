@@ -9,25 +9,19 @@ import admin as admin_view
 
 # ================= 1. 配置与常量定义 =================
 
-st.set_page_config(page_title="HPC 资源管理平台 (MySQL版)", layout="wide")
+st.set_page_config(page_title="HPC 资源管理平台", layout="wide")
 
-# MySQL 数据库配置 (请根据实际情况修改)
+# MySQL 数据库配置
 DB_CONFIG = {
     "host": "localhost",
     "user": "root",
     "password": "780327",  # 请替换为实际密码
     "database": "cloud",
-    "charset": "utf8mb4",    # 强制字符集
-    "collation": "utf8mb4_0900_ai_ci" # 强制排序规则，与表结构一致
+    "charset": "utf8mb4",
+    "collation": "utf8mb4_0900_ai_ci"
 }
 
 # 硬件节点配置 - 必须与 init.sql 中的资源池匹配
-# 参数说明: 
-# - queue: 对应 npus 表中的 queue_type
-# - req_cores: 对应 sp_create_instance 的 p_req_cores
-# - req_gpu_mem: 对应 sp_create_instance 的 p_req_gpu_mem (GB)
-# - req_ram: 对应 sp_create_instance 的 p_req_ram (GB)
-# - req_disk: 对应 sp_create_instance 的 p_req_disk (GB)
 VM_PACKAGES = {
     "gpu": {
         "v100_std": {
@@ -73,13 +67,13 @@ def get_connection():
 # ================= 3. 主程序入口 =================
 
 def main():
-    # 1. 侧边栏：身份切换 (调试用)
+    # 1. 侧边栏：身份切换
     with st.sidebar:
         st.title("HPC 调度控制台")
-        st.caption("架构: Slurm-like MySQL Schema")
+        st.caption("架构: MySQL Queues & Transactions")
         debug_role = st.radio("选择当前身份", ["普通用户 (Student)", "管理员 (Admin)"])
         
-        st.info("说明：\n1. 资源分配由 MySQL 存储过程原子性处理\n2. 严格校验物理资源池(npus/memory)")
+        st.info("说明：\n1. 用户仅提交作业申请，无权直接启停实例。\n2. 只有在任务完成后，用户才能支付账单。\n3. 管理员负责资源审批与强制回收。")
 
     # 2. 获取当前模拟的用户信息
     conn = get_connection()
