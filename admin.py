@@ -145,6 +145,34 @@ def render_admin_dashboard(db_config):
         st.dataframe(all_instances, use_container_width=True)
     else:
         st.text("全系统无运行实例")
+
+    # 4. 高级查询 (SQL)
+    st.markdown("---")
+    st.subheader("高级查询 (SQL)")
+    
+    sql_query = st.text_area("输入 SQL 语句", height=150, placeholder="SELECT * FROM users WHERE ...")
+    
+    if st.button("执行查询", type="primary"):
+        if sql_query.strip():
+            try:
+                cursor.execute(sql_query)
+                
+                if cursor.with_rows:
+                    result = cursor.fetchall()
+                    if result:
+                        df_result = pd.DataFrame(result)
+                        st.dataframe(df_result, use_container_width=True)
+                        st.success(f"查询成功，返回 {len(result)} 行。")
+                    else:
+                        st.info("查询成功，但未返回任何结果。")
+                else:
+                    conn.commit()
+                    st.success(f"执行成功，影响行数: {cursor.rowcount}")
+                    
+            except mysql.connector.Error as err:
+                st.error(f"SQL 执行错误: {err}")
+        else:
+            st.warning("请输入 SQL 语句")
         
     cursor.close()
     conn.close()

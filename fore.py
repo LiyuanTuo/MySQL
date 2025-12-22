@@ -15,7 +15,7 @@ st.set_page_config(page_title="HPC 资源管理平台 (MySQL版)", layout="wide"
 DB_CONFIG = {
     "host": "localhost",
     "user": "root",
-    "password": "jiangliwei2005",  # 请替换为实际密码
+    "password": "780327",  # 请替换为实际密码
     "database": "cloud",
     "charset": "utf8mb4",    # 强制字符集
     "collation": "utf8mb4_0900_ai_ci" # 强制排序规则，与表结构一致
