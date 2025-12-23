@@ -351,7 +351,7 @@ VALUES
 -- 批量插入背景用户
 INSERT INTO `users` (user_name, user_password, email, role, balance, status)
 WITH RECURSIVE seq AS (SELECT 1 AS n UNION ALL SELECT n + 1 FROM seq WHERE n < 50)
-SELECT CONCAT('Researcher_', LPAD(n, 3, '0')), 'pass123', CONCAT('res', n, '@lab.com'), 'user', 100000.00, 'active' FROM seq;
+SELECT CONCAT('Researcher_', LPAD(n, 3, '0')), 'pass123', CONCAT('res', n, '@lab.com'), 'user', 10000.00 * n, 'active' FROM seq;
 
 -- 9.2 初始化 大规模物理资源
 -- A. GPU V100 集群 (50个节点)

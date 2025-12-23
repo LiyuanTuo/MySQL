@@ -291,22 +291,6 @@ def render_admin_dashboard(db_config):
             )
         else:
             st.info("没有找到符合条件的记录。")
-
-                with c1:
-                    st.markdown(f"**作业ID: {req['request_id']}** | 用户ID: {req['user_id']}")
-                    st.caption(f"申请资源: {params['name']} (队列: {params['queue']})")
-                    # 显示具体硬件需求
-                    db_p = params.get('db_params', {})
-                    st.code(f"需求: CPU={db_p.get('req_cores')}C, GPU={db_p.get('req_gpu_mem')}G, RAM={db_p.get('req_ram')}G", language="text")
-                
-                with c2:
-                    if st.button("调度/通过", key=f"app_{req['request_id']}", type="primary"):
-                        if approve_request(db_config, req['request_id'], req['user_id'], params):
-                            st.rerun()
-                with c3:
-                    if st.button("拒绝", key=f"rej_{req['request_id']}"):
-                        reject_request(db_config, req['request_id'])
-                        st.rerun()
     
     # 3. 查看所有运行实例
     st.markdown("---")
